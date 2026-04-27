@@ -1,7 +1,7 @@
 # uptime-bench-certmint
 
 `uptime-bench-certmint` builds and maintains a TLS certificate library for
-[`uptime-bench`](../uptime-bench). It is intentionally separate from the
+[`uptime-bench`](https://github.com/Automattic/uptime-bench). It is intentionally separate from the
 benchmark runtime because it owns ACME account state, DNS-provider credentials,
 certbot execution, private-key storage, and issuance-rate policy.
 
