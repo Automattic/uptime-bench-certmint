@@ -49,13 +49,14 @@ coverage comes from a wildcard. For example:
 ```text
 bench.example.com
 *.bench.example.com
-cert-20260427-00-shortlived.bench.example.com
+cert-20260427-00-shortlived.unique.bench.example.com
 ```
 
 The extra SAN changes the exact identifier set and avoids repeatedly issuing
-the same wildcard set. It does not bypass the registered-domain issuance limit,
-so keep total classic + shortlived issuance under the current Let's Encrypt
-limits for each registered domain.
+the same wildcard set. It must not be redundant with another identifier in the
+same order. It does not bypass the registered-domain issuance limit, so keep
+total classic + shortlived issuance under the current Let's Encrypt limits for
+each registered domain.
 
 ## Config
 
@@ -110,14 +111,24 @@ instead of racing certificate issuance or manifest writes.
 
 This tool shells out to certbot. It does not reimplement ACME.
 
-For short-lived certificates, certbot is invoked with:
+For short-lived certificates, the example config uses:
 
 ```text
---preferred-profile shortlived
+--required-profile shortlived
 ```
 
-For classic certificates, no preferred profile is passed by default so certbot
-uses the CA default.
+That makes issuance fail instead of silently falling back to a normal lifetime
+certificate if the CA does not offer the `shortlived` profile. The example also
+sets `max_lifetime` to reject any archived short-lived certificate whose actual
+validity window is longer than expected.
+
+For classic certificates, no profile is passed by default so certbot uses the
+CA default.
+
+When `certbot.staging` is true, certmint keeps staging snapshots under
+`<library_dir>/staging` and uses staging-specific certbot lineage names. This
+keeps staging output from being archived into the production library when the
+same config is later switched to production.
 
 ## Security
 

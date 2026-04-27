@@ -67,7 +67,9 @@ Use a low, steady cadence per domain:
 - shortlived profile: quickly create soon-to-expire and expired real certs
 
 Each planned issuance adds a unique SAN from the configured template. This keeps
-wildcard coverage while avoiding the exact-set duplicate certificate limit.
+wildcard coverage while avoiding the exact-set duplicate certificate limit. If
+an order includes a wildcard, the unique SAN must be outside that wildcard's
+coverage, such as a deeper `unique.<domain>` name.
 
 The daemon spreads `per_day` issuance across UTC day slots. If it starts late,
 it catches up on due slots for that UTC day.
