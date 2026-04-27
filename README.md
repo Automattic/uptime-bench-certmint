@@ -66,7 +66,15 @@ cp configs/example.json config.json
 ```
 
 The example assumes a DNS-01 certbot plugin. Wildcard certificates require
-DNS-01 validation.
+DNS-01 validation. See [docs/operator.md](docs/operator.md) for install steps,
+staging verification, production cutover, and systemd setup.
+
+If using the example RFC2136 plugin arguments, copy and edit:
+
+```sh
+cp configs/rfc2136.ini.example rfc2136.ini
+chmod 600 rfc2136.ini
+```
 
 ## Commands
 
@@ -93,6 +101,10 @@ Preview without running certbot or writing snapshots:
 ```sh
 uptime-bench-certmint once -config config.json -dry-run
 ```
+
+`once` and `daemon` take an advisory lock at `lock_path`, defaulting to
+`<state_dir>/certmint.lock`, so overlapping manual and daemon runs fail fast
+instead of racing certificate issuance or manifest writes.
 
 ## Certbot
 
